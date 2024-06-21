@@ -3,6 +3,11 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LibrarianLogin extends JFrame {
     static LibrarianLogin frame;
@@ -14,14 +19,12 @@ public class LibrarianLogin extends JFrame {
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    frame = new LibrarianLogin();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                frame = new LibrarianLogin();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -50,14 +53,15 @@ public class LibrarianLogin extends JFrame {
         JButton btnLogin = new JButton("Login");
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String name=textField.getText();
-                String password=String.valueOf(passwordField.getPassword());
-                //System.out.println(name+" "+password);
-                if(LibrarianDao.validate(name, password)){
+                String username = textField.getText();
+                String password = String.valueOf(passwordField.getPassword());
+
+                if (LibrarianDao.validate(username, password)) {
                     LibrarianSuccess.main(new String[]{});
                     frame.dispose();
-                }else{
-                    JOptionPane.showMessageDialog(LibrarianLogin.this, "Sorry, Username or Password Error","Login Error!", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(LibrarianLogin.this,
+                            "Sorry, Username or Password Error", "Login Error!", JOptionPane.ERROR_MESSAGE);
                     textField.setText("");
                     passwordField.setText("");
                 }
@@ -105,5 +109,37 @@ public class LibrarianLogin extends JFrame {
                                 .addContainerGap(80, Short.MAX_VALUE))
         );
         contentPane.setLayout(gl_contentPane);
+    }
+}
+
+class LibrarianDao {
+    private static final String CSV_FILE = "librarians.csv";
+
+    // Method to validate librarian login
+    public static boolean validate(String username, String password) {
+        List<String[]> data = readDataFromCSV();
+        for (String[] row : data) {
+            if (row[0].equals(username) && row[1].equals(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Method to read all data from the CSV file
+    private static List<String[]> readDataFromCSV() {
+        List<String[]> data = new ArrayList<>();
+        try {
+            BufferedReader csvReader = new BufferedReader(new FileReader(CSV_FILE));
+            String row;
+            while ((row = csvReader.readLine()) != null) {
+                String[] rowData = row.split(",");
+                data.add(rowData);
+            }
+            csvReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data;
     }
 }

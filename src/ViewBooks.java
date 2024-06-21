@@ -1,10 +1,11 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ViewBooks extends JFrame {
 
@@ -12,14 +13,12 @@ public class ViewBooks extends JFrame {
     private JTable table;
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    ViewBooks frame = new ViewBooks();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                ViewBooks frame = new ViewBooks();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -29,45 +28,41 @@ public class ViewBooks extends JFrame {
      */
     public ViewBooks() {
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setBounds(100, 100, 450, 300);
+        setBounds(100, 100, 600, 400);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
 
-        String data[][]=null;
-        String column[]=null;
-        try{
-            Connection con=DB.getConnection();
-            PreparedStatement ps=con.prepareStatement("select * from books", ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs=ps.executeQuery();
+        String[][] data = readDataFromCSV();
+        String[] columnNames = {"Book ID", "Title", "Author", "Price", "Quantity"};
 
-            ResultSetMetaData rsmd=rs.getMetaData();
-            int cols=rsmd.getColumnCount();
-            column=new String[cols];
-            for(int i=1;i<=cols;i++){
-                column[i-1]=rsmd.getColumnName(i);
-            }
-
-            rs.last();
-            int rows=rs.getRow();
-            rs.beforeFirst();
-
-            data=new String[rows][cols];
-            int count=0;
-            while(rs.next()){
-                for(int i=1;i<=cols;i++){
-                    data[count][i-1]=rs.getString(i);
-                }
-                count++;
-            }
-            con.close();
-        }catch(Exception e){System.out.println(e);}
-
-        table = new JTable(data,column);
-        JScrollPane sp=new JScrollPane(table);
+        table = new JTable(data, columnNames);
+        JScrollPane sp = new JScrollPane(table);
 
         contentPane.add(sp, BorderLayout.CENTER);
     }
 
+    // Method to read data from the CSV file
+    private String[][] readDataFromCSV() {
+        List<String[]> data = new ArrayList<>();
+        String csvFile = "books.csv"; // Replace with your CSV file path
+
+        try (BufferedReader csvReader = new BufferedReader(new FileReader(csvFile))) {
+            String row;
+            while ((row = csvReader.readLine()) != null) {
+                String[] rowData = row.split(",");
+                data.add(rowData);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Convert List<String[]> to String[][]
+        String[][] dataArray = new String[data.size()][];
+        for (int i = 0; i < data.size(); i++) {
+            dataArray[i] = data.get(i);
+        }
+        return dataArray;
+    }
 }

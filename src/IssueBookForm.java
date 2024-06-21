@@ -3,27 +3,28 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class IssueBookForm extends JFrame {
     static IssueBookForm frame;
     private final JPanel contentPane;
     private final JTextField textField_1;
-    private JTextField textField_2;
-    private JTextField textField_3;
-    private JTextField textField_4;
+    private final JTextField textField_2;
+    private final JTextField textField_3;
+    private final JTextField textField_4;
 
     /**
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    frame = new IssueBookForm();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                frame = new IssueBookForm();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -64,41 +65,35 @@ public class IssueBookForm extends JFrame {
 
         JButton btnIssueBook = new JButton("Issue Book");
         btnIssueBook.addActionListener(new ActionListener() {
-            private AdminSuccess LibrarianSuccess;
-
             public void actionPerformed(ActionEvent e) {
+                String bookcallno = textField_1.getText();
+                int studentid = Integer.parseInt(textField_2.getText());
+                String studentname = textField_3.getText();
+                String studentcontact = textField_4.getText();
 
-                String bookcallno=textField_1.getText();
-                int studentid=Integer.parseInt(textField_2.getText());
-                String studentname=textField_3.getText();
-                String studentcontact=textField_4.getText();
-
-                if(IssueBookDao.checkBook(bookcallno)){
-
-                    int i=IssueBookDao.save(bookcallno, studentid, studentname, studentcontact);
-                    if(i>0){
-                        JOptionPane.showMessageDialog(IssueBookForm.this,"Book issued successfully!");
-                        LibrarianSuccess.main(new String[]{});
-                        frame.dispose();
-
-                    }else{
-                        JOptionPane.showMessageDialog(IssueBookForm.this,"Sorry, unable to issue!");
-                    }//end of save if-else
-
-                }else{
-                    JOptionPane.showMessageDialog(IssueBookForm.this,"Sorry, Callno doesn't exist!");
-                }//end of checkbook if-else
-
+                if (IssueBookDao.checkBook(bookcallno)) {
+                    int i = IssueBookDao.save(bookcallno, studentid, studentname, studentcontact);
+                    if (i > 0) {
+                        JOptionPane.showMessageDialog(IssueBookForm.this, "Book issued successfully!");
+                        // Optionally clear text fields after successful issue
+                        textField_1.setText("");
+                        textField_2.setText("");
+                        textField_3.setText("");
+                        textField_4.setText("");
+                    } else {
+                        JOptionPane.showMessageDialog(IssueBookForm.this, "Sorry, unable to issue!");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(IssueBookForm.this, "Sorry, Callno doesn't exist!");
+                }
             }
         });
 
         JButton btnBack = new JButton("Back");
         btnBack.addActionListener(new ActionListener() {
-            private AdminSuccess LibrarianSuccess;
-
             public void actionPerformed(ActionEvent e) {
-                LibrarianSuccess.main(new String[]{});
-                frame.dispose();
+                // Optional action for "Back" button
+                JOptionPane.showMessageDialog(IssueBookForm.this, "Back button pressed.");
             }
         });
 
@@ -168,5 +163,52 @@ public class IssueBookForm extends JFrame {
                                 .addGap(25))
         );
         contentPane.setLayout(gl_contentPane);
+    }
+}
+
+class IssueBookDao {
+    private static final String CSV_FILE = "issued_books.csv";
+
+    // Method to check if a book exists in the CSV file
+    public static boolean checkBook(String bookcallno) {
+        List<String[]> data = readDataFromCSV();
+        for (String[] row : data) {
+            if (row[0].equals(bookcallno)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Method to save issued book details to the CSV file
+    public static int save(String bookcallno, int studentid, String studentname, String studentcontact) {
+        try {
+            FileWriter csvWriter = new FileWriter(CSV_FILE, true);
+            csvWriter.append(String.join(",", bookcallno, String.valueOf(studentid), studentname, studentcontact));
+            csvWriter.append("\n");
+            csvWriter.flush();
+            csvWriter.close();
+            return 1; // Successful save
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0; // Failed save
+        }
+    }
+
+    // Method to read all data from the CSV file
+    private static List<String[]> readDataFromCSV() {
+        List<String[]> data = new ArrayList<>();
+        try {
+            BufferedReader csvReader = new BufferedReader(new FileReader(CSV_FILE));
+            String row;
+            while ((row = csvReader.readLine()) != null) {
+                String[] rowData = row.split(",");
+                data.add(rowData);
+            }
+            csvReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data;
     }
 }

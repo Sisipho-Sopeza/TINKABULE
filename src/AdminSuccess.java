@@ -40,8 +40,6 @@ public class AdminSuccess extends JFrame {
         JButton btnNewButton = new JButton("Add Librarian");
         btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
         btnNewButton.addActionListener(new ActionListener() {
-            private AdminSuccess LibrarianForm;
-
             public void actionPerformed(ActionEvent e) {
                 LibrarianForm.main(new String[]{});
                 frame.dispose();
@@ -50,8 +48,6 @@ public class AdminSuccess extends JFrame {
 
         JButton btnViewLibrarian = new JButton("View Librarian");
         btnViewLibrarian.addActionListener(new ActionListener() {
-            private AdminSuccess ViewLibrarian;
-
             public void actionPerformed(ActionEvent arg0) {
                 ViewLibrarian.main(new String[]{});
             }
@@ -60,8 +56,6 @@ public class AdminSuccess extends JFrame {
 
         JButton btnDeleteLibrarian = new JButton("Delete Librarian");
         btnDeleteLibrarian.addActionListener(new ActionListener() {
-            private AdminSuccess DeleteLibrarian;
-
             public void actionPerformed(ActionEvent e) {
                 DeleteLibrarian.main(new String[]{});
                 frame.dispose();
@@ -71,8 +65,6 @@ public class AdminSuccess extends JFrame {
 
         JButton btnLogout = new JButton("Logout");
         btnLogout.addActionListener(new ActionListener() {
-            private AdminSuccess Library;
-
             public void actionPerformed(ActionEvent arg0) {
                 Library.main(new String[]{});
                 frame.dispose();

@@ -3,19 +3,16 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class LibrarianSuccess extends JFrame {
-    static LibrarianSuccess frame;
     private JPanel contentPane;
 
-    /**
-     * Launch the application.
-     */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    frame = new LibrarianSuccess();
+                    LibrarianSuccess frame = new LibrarianSuccess();
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -24,9 +21,6 @@ public class LibrarianSuccess extends JFrame {
         });
     }
 
-    /**
-     * Create the frame.
-     */
     public LibrarianSuccess() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 433);
@@ -38,14 +32,14 @@ public class LibrarianSuccess extends JFrame {
         JLabel lblLibrarianSection = new JLabel("Librarian Section - JavaTpoint");
         lblLibrarianSection.setFont(new Font("Tahoma", Font.PLAIN, 22));
 
-        JButton btnNewButton = new JButton("Add Books");
-        btnNewButton.addActionListener(new ActionListener() {
+        JButton btnAddBooks = new JButton("Add Books");
+        btnAddBooks.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 BooksForm.main(new String[]{});
-                frame.dispose();
+                dispose();
             }
         });
-        btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        btnAddBooks.setFont(new Font("Tahoma", Font.PLAIN, 13));
 
         JButton btnViewBooks = new JButton("View Books");
         btnViewBooks.addActionListener(new ActionListener() {
@@ -59,7 +53,7 @@ public class LibrarianSuccess extends JFrame {
         btnIssueBook.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 IssueBookForm.main(new String[]{});
-                frame.dispose();
+                dispose();
             }
         });
         btnIssueBook.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -76,7 +70,7 @@ public class LibrarianSuccess extends JFrame {
         btnReturnBook.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ReturnBook.main(new String[]{});
-                frame.dispose();
+                dispose();
             }
         });
         btnReturnBook.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -85,10 +79,11 @@ public class LibrarianSuccess extends JFrame {
         btnLogout.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Library.main(new String[]{});
-                frame.dispose();
+                dispose();
             }
         });
         btnLogout.setFont(new Font("Tahoma", Font.PLAIN, 13));
+
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
         gl_contentPane.setHorizontalGroup(
                 gl_contentPane.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -104,7 +99,7 @@ public class LibrarianSuccess extends JFrame {
                                         .addComponent(btnViewIssuedBooks, GroupLayout.PREFERRED_SIZE, 191, GroupLayout.PREFERRED_SIZE)
                                         .addComponent(btnIssueBook, GroupLayout.PREFERRED_SIZE, 191, GroupLayout.PREFERRED_SIZE)
                                         .addComponent(btnViewBooks, GroupLayout.PREFERRED_SIZE, 191, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 191, GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(btnAddBooks, GroupLayout.PREFERRED_SIZE, 191, GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(101, Short.MAX_VALUE))
         );
         gl_contentPane.setVerticalGroup(
@@ -113,7 +108,7 @@ public class LibrarianSuccess extends JFrame {
                                 .addContainerGap()
                                 .addComponent(lblLibrarianSection)
                                 .addGap(18)
-                                .addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnAddBooks, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
                                 .addGap(18)
                                 .addComponent(btnViewBooks, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
                                 .addGap(18)
@@ -128,6 +123,4 @@ public class LibrarianSuccess extends JFrame {
         );
         contentPane.setLayout(gl_contentPane);
     }
-
 }
-

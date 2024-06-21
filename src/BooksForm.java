@@ -3,6 +3,9 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class BooksForm extends JFrame {
     static BooksForm frame;
@@ -70,24 +73,25 @@ public class BooksForm extends JFrame {
 
         JButton btnAddBooks = new JButton("Add Books");
         btnAddBooks.addActionListener(new ActionListener() {
-            private BooksForm LibrarianSuccess;
-
             public void actionPerformed(ActionEvent e) {
-                String callno=textField.getText();
-                String name=textField_1.getText();
-                String author=textField_2.getText();
-                String publisher=textField_3.getText();
-                String squantity=textField_4.getText();
-                int quantity=Integer.parseInt(squantity);
-                int i=BookDao.save(callno, name, author, publisher, quantity);
-                if(i>0){
-                    JOptionPane.showMessageDialog(BooksForm.this,"Books added successfully!");
-                    LibrarianSuccess.main(new String[]{});
-                    frame.dispose();
+                String callno = textField.getText();
+                String name = textField_1.getText();
+                String author = textField_2.getText();
+                String publisher = textField_3.getText();
+                String squantity = textField_4.getText();
+                int quantity = Integer.parseInt(squantity);
 
-                }else{
-                    JOptionPane.showMessageDialog(BooksForm.this,"Sorry, unable to save!");
-                }
+                // Save to CSV file
+                saveToCSV(callno, name, author, publisher, quantity);
+
+                JOptionPane.showMessageDialog(BooksForm.this, "Book added successfully!");
+
+                // Clear fields after saving
+                textField.setText("");
+                textField_1.setText("");
+                textField_2.setText("");
+                textField_3.setText("");
+                textField_4.setText("");
             }
         });
 
@@ -158,4 +162,15 @@ public class BooksForm extends JFrame {
         contentPane.setLayout(gl_contentPane);
     }
 
+    // Method to save data to CSV file
+    private void saveToCSV(String callno, String name, String author, String publisher, int quantity) {
+        String csvFile = "books.csv";
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(csvFile, true))) {
+            // Append the new book entry to the CSV file
+            String entry = String.format("%s,%s,%s,%s,%d\n", callno, name, author, publisher, quantity);
+            bw.write(entry);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

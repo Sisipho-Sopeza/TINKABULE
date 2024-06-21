@@ -1,8 +1,9 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DeleteLibrarian extends JFrame {
     static DeleteLibrarian frame;
@@ -13,14 +14,12 @@ public class DeleteLibrarian extends JFrame {
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    frame = new DeleteLibrarian();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                frame = new DeleteLibrarian();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -41,32 +40,29 @@ public class DeleteLibrarian extends JFrame {
         textField.setColumns(10);
 
         JButton btnDelete = new JButton("Delete");
-        btnDelete.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String sid=textField.getText();
-                if(sid==null||sid.trim().equals("")){
-                    JOptionPane.showMessageDialog(DeleteLibrarian.this,"Id can't be blank");
-                }else{
-                    int id=Integer.parseInt(sid);
-                    int i=LibrarianDao.delete(id);
-                    if(i>0){
-                        JOptionPane.showMessageDialog(DeleteLibrarian.this,"Record deleted successfully!");
-                    }else{
-                        JOptionPane.showMessageDialog(DeleteLibrarian.this,"Unable to delete given id!");
-                    }
+        btnDelete.addActionListener(e -> {
+            String sid = textField.getText();
+            if (sid == null || sid.trim().equals("")) {
+                JOptionPane.showMessageDialog(DeleteLibrarian.this, "Id can't be blank");
+            } else {
+                int id = Integer.parseInt(sid);
+                boolean deleted = deleteLibrarian(id);
+                if (deleted) {
+                    JOptionPane.showMessageDialog(DeleteLibrarian.this, "Record deleted successfully!");
+                } else {
+                    JOptionPane.showMessageDialog(DeleteLibrarian.this, "Unable to delete given id!");
                 }
             }
         });
         btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 13));
 
         JButton btnNewButton = new JButton("Back");
-        btnNewButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                AdminSuccess.main(new String[]{});
-                frame.dispose();
-            }
+        btnNewButton.addActionListener(e -> {
+            AdminSuccess.main(new String[]{});
+            frame.dispose();
         });
         btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
+
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
         gl_contentPane.setHorizontalGroup(
                 gl_contentPane.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -99,5 +95,44 @@ public class DeleteLibrarian extends JFrame {
                                 .addContainerGap(78, Short.MAX_VALUE))
         );
         contentPane.setLayout(gl_contentPane);
+    }
+
+    // Method to delete librarian record from CSV file
+    private boolean deleteLibrarian(int id) {
+        String csvFile = "librarians.csv"; // Replace with your CSV file path
+        String tempFile = "temp.csv"; // Temporary file to write updated data
+
+        File inputFile = new File(csvFile);
+        File tempFileObj = new File(tempFile);
+
+        boolean deleted = false;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFileObj))) {
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+                if (data.length > 0 && Integer.parseInt(data[0]) == id) {
+                    deleted = true;
+                    continue; // Skip writing deleted record to temp file
+                }
+                writer.write(line + System.lineSeparator());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Delete the original file and rename the temp file to original
+        if (deleted) {
+            if (inputFile.delete()) {
+                tempFileObj.renameTo(inputFile);
+            } else {
+                deleted = false;
+            }
+        }
+
+        return deleted;
     }
 }

@@ -3,6 +3,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class ReturnBook extends JFrame {
     static ReturnBook frame;
@@ -10,9 +11,6 @@ public class ReturnBook extends JFrame {
     private final JTextField textField;
     private final JTextField textField_1;
 
-    /**
-     * Launch the application.
-     */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -26,9 +24,6 @@ public class ReturnBook extends JFrame {
         });
     }
 
-    /**
-     * Create the frame.
-     */
     public ReturnBook() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 516, 413);
@@ -41,7 +36,6 @@ public class ReturnBook extends JFrame {
         lblReturnBook.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
         JLabel lblBookCallno = new JLabel("Book Callno:");
-
         JLabel lblStudentId = new JLabel("Student Id:");
 
         textField = new JTextField();
@@ -52,19 +46,16 @@ public class ReturnBook extends JFrame {
 
         JButton btnReturnBook = new JButton("Return Book");
         btnReturnBook.addActionListener(new ActionListener() {
-            private LibrarianDao ReturnBookDao;
-
             public void actionPerformed(ActionEvent e) {
-                String bookcallno=textField.getText();
-                int studentid=Integer.parseInt(textField_1.getText());
-                int i=ReturnBookDao.delete(bookcallno, studentid);
-                if(i>0){
-                    JOptionPane.showMessageDialog(ReturnBook.this,"Book returned successfully!");
+                String bookCallno = textField.getText();
+                int studentId = Integer.parseInt(textField_1.getText());
+                boolean isReturned = returnBook(bookCallno, studentId);
+                if (isReturned) {
+                    JOptionPane.showMessageDialog(ReturnBook.this, "Book returned successfully!");
                     LibrarianSuccess.main(new String[]{});
                     frame.dispose();
-
-                }else{
-                    JOptionPane.showMessageDialog(ReturnBook.this,"Sorry, unable to return book!");
+                } else {
+                    JOptionPane.showMessageDialog(ReturnBook.this, "Sorry, unable to return book!");
                 }
             }
         });
@@ -80,14 +71,15 @@ public class ReturnBook extends JFrame {
                 frame.dispose();
             }
         });
+
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
         gl_contentPane.setHorizontalGroup(
-                gl_contentPane.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                gl_contentPane.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(gl_contentPane.createSequentialGroup()
                                 .addGap(36)
                                 .addGroup(gl_contentPane.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(lblStudentId, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lblBookCallno, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE))
+                                        .addComponent(lblBookCallno, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
                                 .addGap(56)
                                 .addGroup(gl_contentPane.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
@@ -134,5 +126,17 @@ public class ReturnBook extends JFrame {
         contentPane.setLayout(gl_contentPane);
     }
 
+    private boolean returnBook(String bookCallno, int studentId) {
+        List<String> issuedBooks = CSVUtils.readLines("issued_books.csv");
+        for (String line : issuedBooks) {
+            String[] parts = line.split(",");
+            String csvBookCallno = parts[0];
+            int csvStudentId = Integer.parseInt(parts[1]);
+            if (csvBookCallno.equals(bookCallno) && csvStudentId == studentId) {
+                CSVUtils.removeLine("issued_books.csv", line);
+                return true;
+            }
+        }
+        return false;
+    }
 }
-
