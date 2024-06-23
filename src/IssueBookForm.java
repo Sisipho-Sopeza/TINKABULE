@@ -48,14 +48,16 @@ public class IssueBookForm extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 438, 414);
         contentPane = new JPanel();
+        contentPane.setBackground(new Color(0, 179, 252));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
 
         JLabel lblNewLabel = new JLabel("Issue Book ");
         lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        lblNewLabel.setForeground(Color.GRAY);
+        lblNewLabel.setForeground(Color.white);
 
         JLabel lblBookName = new JLabel("Book Callno:");
+        lblBookName.setForeground(Color.white);
 
         textField_1 = new JTextField();
         textField_1.setColumns(10);
@@ -70,10 +72,13 @@ public class IssueBookForm extends JFrame {
         textField_4.setColumns(10);
 
         JLabel lblStudentId = new JLabel("Student Id:");
+        lblStudentId.setForeground(Color.white);
 
         JLabel lblStudentName = new JLabel("Student Name:");
+        lblStudentName.setForeground(Color.white);
 
         JLabel lblStudentContact = new JLabel("Student Contact:");
+        lblStudentContact.setForeground(Color.white);
 
         JButton btnIssueBook = new JButton("Issue Book");
         btnIssueBook.addActionListener(new ActionListener() {

@@ -32,38 +32,45 @@ public class LibrarianForm extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 450);
         JPanel contentPane = new JPanel();
+        contentPane.setBackground(new Color(0, 179, 252));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
         JLabel lblAddLibrarian = new JLabel("Add Librarian");
-        lblAddLibrarian.setForeground(Color.DARK_GRAY);
+        lblAddLibrarian.setForeground(Color.white);
         lblAddLibrarian.setFont(new Font("Tahoma", Font.PLAIN, 22));
         lblAddLibrarian.setBounds(150, 26, 150, 30);
         contentPane.add(lblAddLibrarian);
 
         JLabel lblName = new JLabel("Name:");
         lblName.setBounds(58, 87, 70, 20);
+        lblName.setForeground(Color.white);
         contentPane.add(lblName);
 
         JLabel lblPassword = new JLabel("Password:");
         lblPassword.setBounds(58, 118, 70, 20);
+        lblPassword.setForeground(Color.white);
         contentPane.add(lblPassword);
 
         JLabel lblEmail = new JLabel("Email:");
         lblEmail.setBounds(58, 149, 70, 20);
+        lblEmail.setForeground(Color.white);
         contentPane.add(lblEmail);
 
         JLabel lblAddress = new JLabel("Address:");
         lblAddress.setBounds(58, 180, 70, 20);
+        lblAddress.setForeground(Color.white);
         contentPane.add(lblAddress);
 
         JLabel lblCity = new JLabel("City:");
         lblCity.setBounds(58, 211, 70, 20);
+        lblCity.setForeground(Color.white);
         contentPane.add(lblCity);
 
         JLabel lblContactNo = new JLabel("Contact No:");
         lblContactNo.setBounds(58, 242, 86, 20);
+        lblContactNo.setForeground(Color.white);
         contentPane.add(lblContactNo);
 
         textFieldName = new JTextField();

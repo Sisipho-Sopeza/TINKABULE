@@ -3,6 +3,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 
 public class Library extends JFrame {
@@ -32,12 +33,23 @@ public class Library extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         contentPane = new JPanel();
+        contentPane.setBackground(new Color(0, 179, 252));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
 
-        JLabel lblLibraryManagement = new JLabel("TINKA LIBRARY MANEGEMENT SYSTEM");
+        // Loading the image from github
+        JLabel lblLogo = new JLabel();
+        try {
+            URL url = new URL("https://github.com/Sisipho-Sopeza/TINKABULE/blob/main/7706655e8ab74e88b12245260d76ec6f.png?raw=true");
+            ImageIcon logoIcon = new ImageIcon(url);
+            lblLogo.setIcon(logoIcon);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JLabel lblLibraryManagement = new JLabel("TINKA LIBRARY MANAGEMENT SYSTEM");
         lblLibraryManagement.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        lblLibraryManagement.setForeground(Color.GRAY);
+        lblLibraryManagement.setForeground(Color.white);
 
         JButton btnAdminLogin = new JButton("Admin Login");
         btnAdminLogin.addActionListener(new ActionListener() {

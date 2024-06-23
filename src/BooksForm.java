@@ -39,22 +39,28 @@ public class BooksForm extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 404);
         contentPane = new JPanel();
+        contentPane.setBackground(new Color(0, 179, 252));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
 
         JLabel lblAddBooks = new JLabel("Add Books");
-        lblAddBooks.setForeground(Color.GRAY);
+        lblAddBooks.setForeground(Color.white);
         lblAddBooks.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
         JLabel lblCallNo = new JLabel("Call No:");
+        lblCallNo.setForeground(Color.white);
 
         JLabel lblName = new JLabel("Name:");
+        lblName.setForeground(Color.white);
 
         JLabel lblAuthor = new JLabel("Author:");
+        lblAuthor.setForeground(Color.white);
 
         JLabel lblPublisher = new JLabel("Publisher:");
+        lblPublisher.setForeground(Color.white);
 
         JLabel lblQuantity = new JLabel("Quantity:");
+        lblQuantity.setForeground(Color.white);
 
         textField = new JTextField();
         textField.setColumns(10);

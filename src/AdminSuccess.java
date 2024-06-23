@@ -30,12 +30,13 @@ public class AdminSuccess extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 371);
         JPanel contentPane = new JPanel();
+        contentPane.setBackground(new Color(0, 179, 252));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
 
         JLabel lblAdminSection = new JLabel("Admin Section");
         lblAdminSection.setFont(new Font("Tahoma", Font.PLAIN, 22));
-        lblAdminSection.setForeground(Color.GRAY);
+        lblAdminSection.setForeground(Color.white);
 
         JButton btnNewButton = new JButton("Add Librarian");
         btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 15));

@@ -26,15 +26,19 @@ public class ReturnBook extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 516, 413);
         contentPane = new JPanel();
+        contentPane.setBackground(new Color(0, 179, 252));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
 
         JLabel lblReturnBook = new JLabel("Return Book");
-        lblReturnBook.setForeground(Color.GRAY);
+        lblReturnBook.setForeground(Color.white);
         lblReturnBook.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
         JLabel lblBookCallno = new JLabel("Book Callno:");
+        lblBookCallno.setForeground(Color.white);
+
         JLabel lblStudentId = new JLabel("Student Id:");
+        lblStudentId.setForeground(Color.white);
 
         textField = new JTextField();
         textField.setColumns(10);

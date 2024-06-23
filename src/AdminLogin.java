@@ -33,16 +33,19 @@ public class AdminLogin extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         contentPane = new JPanel();
+        contentPane.setBackground(new Color(0, 179, 252));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
 
         JLabel lblAdminLoginForm = new JLabel("Admin Login Form");
-        lblAdminLoginForm.setForeground(Color.GRAY);
+        lblAdminLoginForm.setForeground(Color.white);
         lblAdminLoginForm.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
         JLabel lblEnterName = new JLabel("Enter Name:");
+        lblEnterName.setForeground(Color.white);
 
         JLabel lblEnterPassword = new JLabel("Enter Password:");
+        lblEnterPassword.setForeground(Color.white);
 
         textField = new JTextField();
         textField.setColumns(10);

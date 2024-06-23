@@ -31,10 +31,12 @@ public class DeleteLibrarian extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         contentPane = new JPanel();
+        contentPane.setBackground(new Color(0, 179, 252));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
 
         JLabel lblEnterId = new JLabel("Enter Id:");
+        lblEnterId.setForeground(Color.white);
 
         textField = new JTextField();
         textField.setColumns(10);

@@ -25,11 +25,12 @@ public class LibrarianSuccess extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 433);
         contentPane = new JPanel();
-        contentPane.setForeground(Color.GRAY);
+        contentPane.setBackground(new Color(0, 179, 252));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
 
         JLabel lblLibrarianSection = new JLabel("Librarian Section - Tinka Management");
+        lblLibrarianSection.setForeground(Color.white);
         lblLibrarianSection.setFont(new Font("Tahoma", Font.PLAIN, 22));
 
         JButton btnAddBooks = new JButton("Add Books");
