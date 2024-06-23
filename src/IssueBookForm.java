@@ -15,10 +15,10 @@ public class IssueBookForm extends JFrame {
     private final JTextField textField_3;
     private final JTextField textField_4;
 
-    /**
-     * Launch the application.
-     */
     public static void main(String[] args) {
+        // Initialize CSV file with hardcoded student data
+        initializeStudentData();
+
         EventQueue.invokeLater(() -> {
             try {
                 frame = new IssueBookForm();
@@ -29,9 +29,21 @@ public class IssueBookForm extends JFrame {
         });
     }
 
-    /**
-     * Create the frame.
-     */
+    private static void initializeStudentData() {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student(1, "John Doe", "john.doe@example.com", "1234567890"));
+        students.add(new Student(2, "Jane Smith", "jane.smith@example.com", "2345678901"));
+        students.add(new Student(3, "Alice Johnson", "alice.johnson@example.com", "3456789012"));
+        students.add(new Student(4, "Bob Brown", "bob.brown@example.com", "4567890123"));
+        students.add(new Student(5, "Charlie Davis", "charlie.davis@example.com", "5678901234"));
+        students.add(new Student(6, "Diana Evans", "diana.evans@example.com", "6789012345"));
+        students.add(new Student(7, "Ethan Foster", "ethan.foster@example.com", "7890123456"));
+
+        for (Student student : students) {
+            CSVUtils.write(student); // Assuming CSVUtils.write(Student student) is properly implemented
+        }
+    }
+
     public IssueBookForm() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 438, 414);

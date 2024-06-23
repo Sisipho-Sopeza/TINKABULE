@@ -12,14 +12,12 @@ public class ReturnBook extends JFrame {
     private final JTextField textField_1;
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    frame = new ReturnBook();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                frame = new ReturnBook();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -48,7 +46,13 @@ public class ReturnBook extends JFrame {
         btnReturnBook.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String bookCallno = textField.getText();
-                int studentId = Integer.parseInt(textField_1.getText());
+                int studentId;
+                try {
+                    studentId = Integer.parseInt(textField_1.getText());
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(ReturnBook.this, "Invalid student ID format. Please enter a valid integer.");
+                    return;
+                }
                 boolean isReturned = returnBook(bookCallno, studentId);
                 if (isReturned) {
                     JOptionPane.showMessageDialog(ReturnBook.this, "Book returned successfully!");
@@ -133,7 +137,7 @@ public class ReturnBook extends JFrame {
             String csvBookCallno = parts[0];
             int csvStudentId = Integer.parseInt(parts[1]);
             if (csvBookCallno.equals(bookCallno) && csvStudentId == studentId) {
-                CSVUtils.removeLine("issued_books.csv", line);
+                CSVUtils.removeLine("issued_books.csv", line); // Remove the line from CSV
                 return true;
             }
         }

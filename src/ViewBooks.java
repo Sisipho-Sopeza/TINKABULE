@@ -1,16 +1,16 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class ViewBooks extends JFrame {
 
     private JPanel contentPane;
     private JTable table;
+    private String[][] data;
+    private String[] columnNames = {"Book ID", "Title", "Author", "Price", "Quantity", "Category"};
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
@@ -23,46 +23,74 @@ public class ViewBooks extends JFrame {
         });
     }
 
-    /**
-     * Create the frame.
-     */
     public ViewBooks() {
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setBounds(100, 100, 600, 400);
+        setBounds(100, 100, 800, 600);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
 
-        String[][] data = readDataFromCSV();
-        String[] columnNames = {"Book ID", "Title", "Author", "Price", "Quantity"};
-
+        data = readDataFromCSV();
         table = new JTable(data, columnNames);
         JScrollPane sp = new JScrollPane(table);
-
         contentPane.add(sp, BorderLayout.CENTER);
+
+        JPanel panel = new JPanel();
+        contentPane.add(panel, BorderLayout.SOUTH);
+
+        JButton btnAddBook = new JButton("Add Book");
+        panel.add(btnAddBook);
+
+        btnAddBook.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addBook();
+            }
+        });
     }
 
-    // Method to read data from the CSV file
     private String[][] readDataFromCSV() {
-        List<String[]> data = new ArrayList<>();
-        String csvFile = "books.csv"; // Replace with your CSV file path
-
-        try (BufferedReader csvReader = new BufferedReader(new FileReader(csvFile))) {
-            String row;
-            while ((row = csvReader.readLine()) != null) {
-                String[] rowData = row.split(",");
-                data.add(rowData);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // Convert List<String[]> to String[][]
-        String[][] dataArray = new String[data.size()][];
-        for (int i = 0; i < data.size(); i++) {
-            dataArray[i] = data.get(i);
+        List<String[]> books = CSVUtils.readAllBooks();
+        String[][] dataArray = new String[books.size()][];
+        for (int i = 0; i < books.size(); i++) {
+            dataArray[i] = books.get(i);
         }
         return dataArray;
+    }
+
+    private void addBook() {
+        JTextField bookIDField = new JTextField();
+        JTextField titleField = new JTextField();
+        JTextField authorField = new JTextField();
+        JTextField priceField = new JTextField();
+        JTextField quantityField = new JTextField();
+        JTextField categoryField = new JTextField();
+
+        Object[] message = {
+            "Book ID:", bookIDField,
+            "Title:", titleField,
+            "Author:", authorField,
+            "Price:", priceField,
+            "Quantity:", quantityField,
+            "Category:", categoryField
+        };
+
+        int option = JOptionPane.showConfirmDialog(null, message, "Add New Book", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            String[] newBook = {
+                bookIDField.getText(),
+                titleField.getText(),
+                authorField.getText(),
+                priceField.getText(),
+                quantityField.getText(),
+                categoryField.getText()
+            };
+
+            CSVUtils.writeBook(newBook);
+
+            // Refresh the table with new data
+            data = readDataFromCSV();
+            table.setModel(new javax.swing.table.DefaultTableModel(data, columnNames));
+        }
     }
 }

@@ -11,12 +11,13 @@ public class LibrarianForm extends JFrame {
     private JTextField textFieldAddress;
     private JTextField textFieldCity;
     private JTextField textFieldContact;
+    private ViewLibrarian parentFrame;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    LibrarianForm frame = new LibrarianForm();
+                    LibrarianForm frame = new LibrarianForm(null);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -25,7 +26,9 @@ public class LibrarianForm extends JFrame {
         });
     }
 
-    public LibrarianForm() {
+    public LibrarianForm(ViewLibrarian parentFrame) {
+        this.parentFrame = parentFrame;
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 450);
         JPanel contentPane = new JPanel();
@@ -107,7 +110,9 @@ public class LibrarianForm extends JFrame {
                 CSVUtils.write(librarian);
 
                 JOptionPane.showMessageDialog(LibrarianForm.this, "Librarian added successfully!");
-                AdminSuccess.main(new String[]{});
+                if (parentFrame != null) {
+                    parentFrame.refreshTable();
+                }
                 dispose();
             }
         });
@@ -117,7 +122,9 @@ public class LibrarianForm extends JFrame {
         JButton btnBack = new JButton("Back");
         btnBack.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AdminSuccess.main(new String[]{});
+                if (parentFrame != null) {
+                    parentFrame.setVisible(true);
+                }
                 dispose();
             }
         });

@@ -1,16 +1,16 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class ViewLibrarian extends JFrame {
 
     private JPanel contentPane;
     private JTable table;
+    private String[][] data;
+    private String[] columnNames = {"Name", "Email", "Contact"};
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
@@ -23,45 +23,45 @@ public class ViewLibrarian extends JFrame {
         });
     }
 
-    /**
-     * Create the frame.
-     */
     public ViewLibrarian() {
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setBounds(100, 100, 600, 400);
+        setBounds(100, 100, 800, 600);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
 
-        String[][] data = readDataFromCSV();
-        String[] columnNames = {"ID", "Name", "Email", "Contact"};
-
+        data = readDataFromCSV();
         table = new JTable(data, columnNames);
         JScrollPane sp = new JScrollPane(table);
-
         contentPane.add(sp, BorderLayout.CENTER);
+
+        JPanel panel = new JPanel();
+        contentPane.add(panel, BorderLayout.SOUTH);
+
+        JButton btnAddLibrarian = new JButton("Add Librarian");
+        panel.add(btnAddLibrarian);
+
+        btnAddLibrarian.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new LibrarianForm(ViewLibrarian.this);
+            }
+        });
     }
 
-    // Method to read data from the CSV file
-    private String[][] readDataFromCSV() {
-        List<String[]> data = new ArrayList<>();
-        try {
-            BufferedReader csvReader = new BufferedReader(new FileReader("librarian_records.csv"));
-            String row;
-            while ((row = csvReader.readLine()) != null) {
-                String[] rowData = row.split(",");
-                data.add(rowData);
-            }
-            csvReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void refreshTable() {
+        data = readDataFromCSV();
+        table.setModel(new javax.swing.table.DefaultTableModel(data, columnNames));
+    }
 
-        // Convert List<String[]> to String[][]
-        String[][] dataArray = new String[data.size()][];
-        for (int i = 0; i < data.size(); i++) {
-            dataArray[i] = data.get(i);
+    private String[][] readDataFromCSV() {
+        List<Librarian> librarians = CSVUtils.readAll();
+        String[][] dataArray = new String[librarians.size()][3];
+        for (int i = 0; i < librarians.size(); i++) {
+            Librarian librarian = librarians.get(i);
+            dataArray[i][0] = librarian.getName();
+            dataArray[i][1] = librarian.getEmail();
+            dataArray[i][2] = librarian.getContact();
         }
         return dataArray;
     }
