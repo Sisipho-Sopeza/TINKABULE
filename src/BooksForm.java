@@ -16,9 +16,6 @@ public class BooksForm extends JFrame {
     private JTextField textField_3;
     private JTextField textField_4;
 
-    /**
-     * Launch the application.
-     */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -32,9 +29,6 @@ public class BooksForm extends JFrame {
         });
     }
 
-    /**
-     * Create the frame.
-     */
     public BooksForm() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 404);
@@ -87,12 +81,10 @@ public class BooksForm extends JFrame {
                 String squantity = textField_4.getText();
                 int quantity = Integer.parseInt(squantity);
 
-                // Save to CSV file
                 saveToCSV(callno, name, author, publisher, quantity);
 
                 JOptionPane.showMessageDialog(BooksForm.this, "Book added successfully!");
 
-                // Clear fields after saving
                 textField.setText("");
                 textField_1.setText("");
                 textField_2.setText("");
@@ -102,6 +94,13 @@ public class BooksForm extends JFrame {
         });
 
         JButton btnBack = new JButton("Back");
+        btnBack.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                LibrarianSuccess.main(new String[]{});
+                frame.dispose();
+            }
+        });
+
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
         gl_contentPane.setHorizontalGroup(
                 gl_contentPane.createParallelGroup(GroupLayout.Alignment.TRAILING)
@@ -168,11 +167,9 @@ public class BooksForm extends JFrame {
         contentPane.setLayout(gl_contentPane);
     }
 
-    // Method to save data to CSV file
     private void saveToCSV(String callno, String name, String author, String publisher, int quantity) {
         String csvFile = "books.csv";
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(csvFile, true))) {
-            // Append the new book entry to the CSV file
             String entry = String.format("%s,%s,%s,%s,%d\n", callno, name, author, publisher, quantity);
             bw.write(entry);
         } catch (IOException e) {
