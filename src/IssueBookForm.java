@@ -109,8 +109,8 @@ public class IssueBookForm extends JFrame {
         JButton btnBack = new JButton("Back");
         btnBack.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Optional action for "Back" button
-                JOptionPane.showMessageDialog(IssueBookForm.this, "Back button pressed.");
+                LibrarianSuccess.main(new String[]{});
+                frame.dispose(); // Closes the current window
             }
         });
 
