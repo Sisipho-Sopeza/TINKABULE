@@ -3,21 +3,16 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
-
 
 public class Library extends JFrame {
-    static Library frame;
+    private static Library frame;
     private JPanel contentPane;
 
-    /**
-     * Launch the application.
-     */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    frame= new Library();
+                    frame = new Library();
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -26,36 +21,22 @@ public class Library extends JFrame {
         });
     }
 
-    /**
-     * Create the frame.
-     */
     public Library() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         contentPane = new JPanel();
-        contentPane.setBackground(new Color(0, 179, 252));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
 
-        // Loading the image from github
-        JLabel lblLogo = new JLabel();
-        try {
-            URL url = new URL("https://github.com/Sisipho-Sopeza/TINKABULE/blob/main/7706655e8ab74e88b12245260d76ec6f.png?raw=true");
-            ImageIcon logoIcon = new ImageIcon(url);
-            lblLogo.setIcon(logoIcon);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         JLabel lblLibraryManagement = new JLabel("TINKA LIBRARY MANAGEMENT SYSTEM");
         lblLibraryManagement.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        lblLibraryManagement.setForeground(Color.white);
+        lblLibraryManagement.setForeground(Color.GRAY);
 
         JButton btnAdminLogin = new JButton("Admin Login");
         btnAdminLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 AdminLogin.main(new String[]{});
-                frame.dispose();
+                frame.setVisible(false);
             }
         });
         btnAdminLogin.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -64,9 +45,11 @@ public class Library extends JFrame {
         btnLibrarianLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 LibrarianLogin.main(new String[]{});
+                frame.setVisible(false);
             }
         });
         btnLibrarianLogin.setFont(new Font("Tahoma", Font.PLAIN, 15));
+
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
         gl_contentPane.setHorizontalGroup(
                 gl_contentPane.createParallelGroup(GroupLayout.Alignment.LEADING)
