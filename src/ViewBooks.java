@@ -11,20 +11,12 @@ public class ViewBooks extends JFrame {
     private JTable table;
     private String[][] data;
     private String[] columnNames = {"Book ID", "Title", "Author", "Price", "Quantity", "Category"};
+    private LibrarianSuccess previousFrame;
 
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-                ViewBooks frame = new ViewBooks();
-                frame.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
+    public ViewBooks(LibrarianSuccess previousFrame) {
+        this.previousFrame = previousFrame;
 
-    public ViewBooks() {
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 800, 600);
         contentPane = new JPanel();
         contentPane.setBackground(new Color(0, 179, 252));
@@ -48,6 +40,16 @@ public class ViewBooks extends JFrame {
                 addBook();
             }
         });
+
+        // Add back button
+        JButton btnBack = new JButton("Back");
+        panel.add(btnBack);
+
+        btnBack.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                goToLibrarianSuccess();
+            }
+        });
     }
 
     private String[][] readDataFromCSV() {
@@ -68,23 +70,23 @@ public class ViewBooks extends JFrame {
         JTextField categoryField = new JTextField();
 
         Object[] message = {
-            "Book ID:", bookIDField,
-            "Title:", titleField,
-            "Author:", authorField,
-            "Price:", priceField,
-            "Quantity:", quantityField,
-            "Category:", categoryField
+                "Book ID:", bookIDField,
+                "Title:", titleField,
+                "Author:", authorField,
+                "Price:", priceField,
+                "Quantity:", quantityField,
+                "Category:", categoryField
         };
 
         int option = JOptionPane.showConfirmDialog(null, message, "Add New Book", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             String[] newBook = {
-                bookIDField.getText(),
-                titleField.getText(),
-                authorField.getText(),
-                priceField.getText(),
-                quantityField.getText(),
-                categoryField.getText()
+                    bookIDField.getText(),
+                    titleField.getText(),
+                    authorField.getText(),
+                    priceField.getText(),
+                    quantityField.getText(),
+                    categoryField.getText()
             };
 
             CSVUtils.writeBook(newBook);
@@ -93,5 +95,10 @@ public class ViewBooks extends JFrame {
             data = readDataFromCSV();
             table.setModel(new javax.swing.table.DefaultTableModel(data, columnNames));
         }
+    }
+
+    private void goToLibrarianSuccess() {
+        previousFrame.setVisible(true);
+        this.dispose();
     }
 }

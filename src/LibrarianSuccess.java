@@ -3,20 +3,17 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 public class LibrarianSuccess extends JFrame {
     private JPanel contentPane;
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    LibrarianSuccess frame = new LibrarianSuccess();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                LibrarianSuccess frame = new LibrarianSuccess();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -45,7 +42,9 @@ public class LibrarianSuccess extends JFrame {
         JButton btnViewBooks = new JButton("View Books");
         btnViewBooks.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                ViewBooks.main(new String[]{});
+                ViewBooks viewBooksFrame = new ViewBooks(LibrarianSuccess.this);
+                viewBooksFrame.setVisible(true);
+                setVisible(false);
             }
         });
         btnViewBooks.setFont(new Font("Tahoma", Font.PLAIN, 13));
