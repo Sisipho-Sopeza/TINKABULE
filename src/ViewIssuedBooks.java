@@ -32,6 +32,12 @@ public class ViewIssuedBooks extends JFrame {
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
 
+        // Centering the JFrame on the screen
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int centerX = (int) ((screenSize.getWidth() - getWidth()) / 2);
+        int centerY = (int) ((screenSize.getHeight() - getHeight()) / 2);
+        setLocation(centerX, centerY);
+
         String[][] data = readDataFromCSV();
         String[] columnNames = {"Book ID", "Student ID", "Student Name", "Student Contact"};
 

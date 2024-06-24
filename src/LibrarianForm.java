@@ -37,6 +37,12 @@ public class LibrarianForm extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
+        // Centering the JFrame on the screen
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int centerX = (int) ((screenSize.getWidth() - getWidth()) / 2);
+        int centerY = (int) ((screenSize.getHeight() - getHeight()) / 2);
+        setLocation(centerX, centerY);
+
         JLabel lblAddLibrarian = new JLabel("Add Librarian");
         lblAddLibrarian.setForeground(Color.white);
         lblAddLibrarian.setFont(new Font("Tahoma", Font.PLAIN, 22));

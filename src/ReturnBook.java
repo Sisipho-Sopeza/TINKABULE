@@ -30,6 +30,12 @@ public class ReturnBook extends JFrame {
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
 
+        // Centering the JFrame on the screen
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int centerX = (int) ((screenSize.getWidth() - getWidth()) / 2);
+        int centerY = (int) ((screenSize.getHeight() - getHeight()) / 2);
+        setLocation(centerX, centerY);
+
         JLabel lblReturnBook = new JLabel("Return Book");
         lblReturnBook.setForeground(Color.white);
         lblReturnBook.setFont(new Font("Tahoma", Font.PLAIN, 18));

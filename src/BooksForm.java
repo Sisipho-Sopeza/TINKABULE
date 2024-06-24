@@ -37,6 +37,12 @@ public class BooksForm extends JFrame {
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
 
+        // Centering the JFrame on the screen
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int centerX = (int) ((screenSize.getWidth() - getWidth()) / 2);
+        int centerY = (int) ((screenSize.getHeight() - getHeight()) / 2);
+        setLocation(centerX, centerY);
+
         JLabel lblAddBooks = new JLabel("Add Books");
         lblAddBooks.setForeground(Color.white);
         lblAddBooks.setFont(new Font("Tahoma", Font.PLAIN, 18));
