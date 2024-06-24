@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 public class IssueDao {
 
@@ -8,7 +10,7 @@ public class IssueDao {
     public static boolean checkBookById(int bookId) {
         boolean exists = false;
         String line = "";
-        String csvFile = "issued_books.csv"; // Adjust file path as necessary
+        String csvFile = "books.csv"; // Adjust file path as necessary
 
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             while ((line = br.readLine()) != null) {
@@ -26,9 +28,16 @@ public class IssueDao {
         return exists;
     }
 
-    // Method to save issued book information - implementation depends on your specific logic
+    // Method to save issued book information
     public static int save(int bookId, int studentId, String studentName, String studentContact) {
-        // Implement saving logic here, returning > 0 if successful, 0 or < 0 otherwise
-        return 1; // Placeholder return value
+        String csvFile = "issued_books.csv"; // Adjust file path as necessary
+
+        try (PrintWriter pw = new PrintWriter(new FileWriter(csvFile, true))) {
+            pw.println(bookId + "," + studentId + "," + studentName + "," + studentContact);
+            return 1; // Return 1 for successful save
+        } catch (IOException e) {
+            e.printStackTrace();
+            return -1; // Return -1 for save failure
+        }
     }
 }
