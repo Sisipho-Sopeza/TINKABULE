@@ -25,12 +25,13 @@ public class Library extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         contentPane = new JPanel();
+        contentPane.setBackground(new Color(0, 179, 252));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
 
         JLabel lblLibraryManagement = new JLabel("TINKA LIBRARY MANAGEMENT SYSTEM");
         lblLibraryManagement.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        lblLibraryManagement.setForeground(Color.GRAY);
+        lblLibraryManagement.setForeground(Color.white);
 
         JButton btnAdminLogin = new JButton("Admin Login");
         btnAdminLogin.addActionListener(new ActionListener() {
