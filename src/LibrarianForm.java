@@ -29,7 +29,7 @@ public class LibrarianForm extends JFrame {
     public LibrarianForm(ViewLibrarian parentFrame) {
         this.parentFrame = parentFrame;
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 450, 450);
         JPanel contentPane = new JPanel();
         contentPane.setBackground(new Color(0, 179, 252));
@@ -105,7 +105,6 @@ public class LibrarianForm extends JFrame {
         JButton btnAddLibrarian = new JButton("Add Librarian");
         btnAddLibrarian.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 String name = textFieldName.getText();
                 String password = String.valueOf(passwordField.getPassword());
                 String email = textFieldEmail.getText();
@@ -120,7 +119,7 @@ public class LibrarianForm extends JFrame {
                 if (parentFrame != null) {
                     parentFrame.refreshTable();
                 }
-                dispose();
+                goToAdminSuccess();
             }
         });
         btnAddLibrarian.setBounds(162, 273, 120, 23);
@@ -129,13 +128,16 @@ public class LibrarianForm extends JFrame {
         JButton btnBack = new JButton("Back");
         btnBack.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (parentFrame != null) {
-                    parentFrame.setVisible(true);
-                }
-                dispose();
+                goToAdminSuccess();
             }
         });
         btnBack.setBounds(292, 273, 89, 23);
         contentPane.add(btnBack);
+    }
+
+    private void goToAdminSuccess() {
+        AdminSuccess adminSuccess = new AdminSuccess();
+        adminSuccess.setVisible(true);
+        dispose();
     }
 }
