@@ -10,19 +10,8 @@ public class ViewLibrarian extends JFrame {
     private String[][] data;
     private String[] columnNames = {"Name", "Email", "Contact"};
 
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-                ViewLibrarian frame = new ViewLibrarian();
-                frame.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    public ViewLibrarian() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Use EXIT_ON_CLOSE for main application
+    public ViewLibrarian(JFrame parent) {
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 800, 600);
         contentPane = new JPanel();
         contentPane.setBackground(new Color(0, 179, 252));
@@ -48,6 +37,15 @@ public class ViewLibrarian extends JFrame {
         panel.add(btnAddLibrarian);
 
         btnAddLibrarian.addActionListener(e -> new LibrarianForm(ViewLibrarian.this));
+
+        // Add back button
+        JButton btnBack = new JButton("Back");
+        panel.add(btnBack);
+
+        btnBack.addActionListener(e -> {
+            parent.setVisible(true);
+            dispose();
+        });
     }
 
     public void refreshTable() {
@@ -65,5 +63,18 @@ public class ViewLibrarian extends JFrame {
             dataArray[i][2] = librarian.getContact();
         }
         return dataArray;
+    }
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+                // This is just for testing purposes. In actual use,
+                // ViewLibrarian should be created from AdminSuccess
+                ViewLibrarian frame = new ViewLibrarian(new JFrame());
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

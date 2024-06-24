@@ -7,9 +7,6 @@ import java.awt.event.ActionListener;
 public class AdminSuccess extends JFrame {
     public static AdminSuccess frame;
 
-    /**
-     * Launch the application.
-     */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -23,9 +20,6 @@ public class AdminSuccess extends JFrame {
         });
     }
 
-    /**
-     * Create the frame.
-     */
     public AdminSuccess() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 371);
@@ -56,7 +50,9 @@ public class AdminSuccess extends JFrame {
         JButton btnViewLibrarian = new JButton("View Librarian");
         btnViewLibrarian.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                ViewLibrarian.main(new String[]{});
+                ViewLibrarian viewLibrarian = new ViewLibrarian(AdminSuccess.this);
+                viewLibrarian.setVisible(true);
+                setVisible(false);
             }
         });
         btnViewLibrarian.setFont(new Font("Tahoma", Font.PLAIN, 15));
