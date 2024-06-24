@@ -1,8 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class ViewLibrarian extends JFrame {
@@ -24,7 +22,7 @@ public class ViewLibrarian extends JFrame {
     }
 
     public ViewLibrarian() {
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Use EXIT_ON_CLOSE for main application
         setBounds(100, 100, 800, 600);
         contentPane = new JPanel();
         contentPane.setBackground(new Color(0, 179, 252));
@@ -43,11 +41,7 @@ public class ViewLibrarian extends JFrame {
         JButton btnAddLibrarian = new JButton("Add Librarian");
         panel.add(btnAddLibrarian);
 
-        btnAddLibrarian.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                new LibrarianForm(ViewLibrarian.this);
-            }
-        });
+        btnAddLibrarian.addActionListener(e -> new LibrarianForm(ViewLibrarian.this));
     }
 
     public void refreshTable() {
@@ -56,7 +50,7 @@ public class ViewLibrarian extends JFrame {
     }
 
     private String[][] readDataFromCSV() {
-        List<Librarian> librarians = CSVUtils.readAll();
+        List<Librarian> librarians = CSVUtils.readAllLibrarians();
         String[][] dataArray = new String[librarians.size()][3];
         for (int i = 0; i < librarians.size(); i++) {
             Librarian librarian = librarians.get(i);

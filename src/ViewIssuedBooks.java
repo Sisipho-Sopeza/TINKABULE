@@ -23,9 +23,6 @@ public class ViewIssuedBooks extends JFrame {
         });
     }
 
-    /**
-     * Create the frame.
-     */
     public ViewIssuedBooks() {
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setBounds(100, 100, 600, 400);
@@ -36,12 +33,18 @@ public class ViewIssuedBooks extends JFrame {
         setContentPane(contentPane);
 
         String[][] data = readDataFromCSV();
-        String[] columnNames = {"Book Call No", "Student ID", "Student Name", "Student Contact"};
+        String[] columnNames = {"Book ID", "Student ID", "Student Name", "Student Contact"};
 
-        table = new JTable(data, columnNames);
-        JScrollPane sp = new JScrollPane(table);
-
-        contentPane.add(sp, BorderLayout.CENTER);
+        if (data != null) {
+            table = new JTable(data, columnNames);
+            JScrollPane sp = new JScrollPane(table);
+            contentPane.add(sp, BorderLayout.CENTER);
+        } else {
+            JLabel lblError = new JLabel("Error: issued_books.csv not found or empty.");
+            lblError.setForeground(Color.RED);
+            lblError.setHorizontalAlignment(SwingConstants.CENTER);
+            contentPane.add(lblError, BorderLayout.CENTER);
+        }
     }
 
     // Method to read data from the CSV file
@@ -57,6 +60,9 @@ public class ViewIssuedBooks extends JFrame {
             csvReader.close();
         } catch (IOException e) {
             e.printStackTrace();
+            // Handle file not found or other IO exceptions
+            JOptionPane.showMessageDialog(this, "Error: issued_books.csv not found or could not be read.");
+            return null; // Return null or handle as appropriate in your application
         }
 
         // Convert List<String[]> to String[][]

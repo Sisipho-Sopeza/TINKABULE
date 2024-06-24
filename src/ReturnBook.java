@@ -34,8 +34,8 @@ public class ReturnBook extends JFrame {
         lblReturnBook.setForeground(Color.white);
         lblReturnBook.setFont(new Font("Tahoma", Font.PLAIN, 18));
 
-        JLabel lblBookCallno = new JLabel("Book Callno:");
-        lblBookCallno.setForeground(Color.white);
+        JLabel lblBookId = new JLabel("Book ID:"); // Updated label
+        lblBookId.setForeground(Color.white);
 
         JLabel lblStudentId = new JLabel("Student Id:");
         lblStudentId.setForeground(Color.white);
@@ -49,15 +49,21 @@ public class ReturnBook extends JFrame {
         JButton btnReturnBook = new JButton("Return Book");
         btnReturnBook.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String bookCallno = textField.getText();
+                int bookId;
+                try {
+                    bookId = Integer.parseInt(textField.getText()); // Read book ID
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(ReturnBook.this, "Invalid Book ID format. Please enter a valid integer.");
+                    return;
+                }
                 int studentId;
                 try {
-                    studentId = Integer.parseInt(textField_1.getText());
+                    studentId = Integer.parseInt(textField_1.getText()); // Read student ID
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(ReturnBook.this, "Invalid student ID format. Please enter a valid integer.");
                     return;
                 }
-                boolean isReturned = returnBook(bookCallno, studentId);
+                boolean isReturned = returnBook(bookId, studentId); // Pass bookId instead of bookCallno
                 if (isReturned) {
                     JOptionPane.showMessageDialog(ReturnBook.this, "Book returned successfully!");
                     LibrarianSuccess.main(new String[]{});
@@ -87,7 +93,7 @@ public class ReturnBook extends JFrame {
                                 .addGap(36)
                                 .addGroup(gl_contentPane.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(lblStudentId, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lblBookCallno, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
+                                        .addComponent(lblBookId, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
                                 .addGap(56)
                                 .addGroup(gl_contentPane.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
@@ -117,7 +123,7 @@ public class ReturnBook extends JFrame {
                                 .addComponent(lblReturnBook)
                                 .addGap(32)
                                 .addGroup(gl_contentPane.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(lblBookCallno)
+                                        .addComponent(lblBookId)
                                         .addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                                 .addGap(34)
                                 .addGroup(gl_contentPane.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -134,13 +140,13 @@ public class ReturnBook extends JFrame {
         contentPane.setLayout(gl_contentPane);
     }
 
-    private boolean returnBook(String bookCallno, int studentId) {
+    private boolean returnBook(int bookId, int studentId) { // Updated method signature
         List<String> issuedBooks = CSVUtils.readLines("issued_books.csv");
         for (String line : issuedBooks) {
             String[] parts = line.split(",");
-            String csvBookCallno = parts[0];
+            int csvBookId = Integer.parseInt(parts[0]); // Compare book ID from CSV
             int csvStudentId = Integer.parseInt(parts[1]);
-            if (csvBookCallno.equals(bookCallno) && csvStudentId == studentId) {
+            if (csvBookId == bookId && csvStudentId == studentId) {
                 CSVUtils.removeLine("issued_books.csv", line); // Remove the line from CSV
                 return true;
             }
